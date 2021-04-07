@@ -82,7 +82,7 @@ public class RatingSvc {
 		policyObj.setCoverages(coverages);
 		policyObj.setPremium("$689.74");
 		
-		AWSXRay.beginSubsegment("Inserting into DocumentDB");
+		AWSXRay.beginSubsegment("Saving Policy into DocumentDB");
 		  String connectionString =
 "mongodb://octankdev:octankdev@octankdev1.cluster-cfseldobtmse.us-east-1.docdb.amazonaws.com:27017/?replicaSet=rs0&readPreference=secondaryPreferred";		  //octank.cluster-ct9cduhirshz.us-east-1.docdb.amazonaws.com:27017
 		  MongoClientURI clientURI = new MongoClientURI(connectionString);
