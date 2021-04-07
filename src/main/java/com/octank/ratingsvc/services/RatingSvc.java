@@ -44,8 +44,10 @@ public class RatingSvc {
         System.out.println("The policy numer for rating"+policyNumber);
 		RestTemplate restTemplate = new RestTemplate();
 		String fooResourceUrl
-		  = "http://localhost:8080/spring-rest/foos";
+		  = "http://appsvc.octank-dev.svc.cluster.local";
 		String fullurl=fooResourceUrl + "/"+policyNumber+"/applicants";
+		
+		System.out.println("Full url is "+fullurl);
 		ResponseEntity<List<Applicant>> response
 		  = restTemplate.exchange(fullurl,HttpMethod.GET,null, new ParameterizedTypeReference<List<Applicant>>() {});
 		 
