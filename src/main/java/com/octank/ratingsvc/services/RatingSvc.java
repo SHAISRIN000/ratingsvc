@@ -30,7 +30,7 @@ import com.mongodb.client.MongoDatabase;
 
 
 @RestController
-@RequestMapping(path ="/rate")
+@RequestMapping(path ="/rating")
 @XRayEnabled
 public class RatingSvc {
 
