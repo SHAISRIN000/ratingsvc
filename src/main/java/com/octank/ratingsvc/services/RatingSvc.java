@@ -1,32 +1,31 @@
 package com.octank.ratingsvc.services;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.bson.Document;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.amazonaws.xray.AWSXRay;
+import com.amazonaws.xray.entities.Subsegment;
+import com.amazonaws.xray.proxies.apache.http.HttpClientBuilder;
 import com.amazonaws.xray.spring.aop.XRayEnabled;
 import com.google.gson.Gson;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
-
 
 
 @RestController
@@ -37,20 +36,38 @@ public class RatingSvc {
 	private static final String template = "Hello, %s!";
 	private final AtomicLong counter = new AtomicLong();
 	
+	private RestTemplate restTemplate;
+
+	
+	@Autowired
+    public RatingSvc(RestTemplateBuilder restTemplateBuilder) {
+	       HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory(HttpClientBuilder.create().useSystemProperties().build());
+	        factory.setReadTimeout(10000);
+	        factory.setConnectTimeout(2000);
+	        factory.setConnectionRequestTimeout(2000);
+	        
+	        
+      this.restTemplate=new RestTemplate(factory);
+
+    }
+
+	
+   
+    
 	@GetMapping(value = "/{policyNumber}",produces= "application/json")
 	    public Policy rating(@PathVariable("policyNumber") String policyNumber)
 	    {
 
         System.out.println("The policy numer for rating"+policyNumber);
-		RestTemplate restTemplate = new RestTemplate();
+         AWSXRay.beginSubsegment("Fetching Applicant");
 		String fooResourceUrl
 		  = "http://appsvc.octank-dev.svc.cluster.local/applicants/policy";
 		String fullurl=fooResourceUrl + "/"+policyNumber;
 		
 		System.out.println("Full url is "+fullurl);
 		ResponseEntity<List<Applicant>> response
-		  = restTemplate.exchange(fullurl,HttpMethod.GET,null, new ParameterizedTypeReference<List<Applicant>>() {});
-		 
+		  = this.restTemplate.exchange(fullurl,HttpMethod.GET,null, new ParameterizedTypeReference<List<Applicant>>() {});
+		AWSXRay.endSubsegment();
 		List<Applicant> applicants=response.getBody();
 		
 		
@@ -65,7 +82,7 @@ public class RatingSvc {
 		policyObj.setCoverages(coverages);
 		policyObj.setPremium("$689.74");
 		
-		  
+		AWSXRay.beginSubsegment("Inserting into DocumentDB");
 		  String connectionString =
 "mongodb://octankdev:octankdev@octankdev1.cluster-cfseldobtmse.us-east-1.docdb.amazonaws.com:27017/?replicaSet=rs0&readPreference=secondaryPreferred";		  //octank.cluster-ct9cduhirshz.us-east-1.docdb.amazonaws.com:27017
 		  MongoClientURI clientURI = new MongoClientURI(connectionString);
@@ -83,7 +100,8 @@ public class RatingSvc {
 		  numbersCollection.insertOne(doc);
 		  System.out.println("Inserted Applicant Successfully");
 		
-		
+			AWSXRay.endSubsegment();
+
 		
 		
 		return policyObj;
