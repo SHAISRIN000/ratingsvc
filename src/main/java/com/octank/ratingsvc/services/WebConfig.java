@@ -10,6 +10,6 @@ public class WebConfig {
 
   @Bean
   public Filter TracingFilter() {
- return new AWSXRayServletFilter("appsvc");
+ return new AWSXRayServletFilter("ratingsvc");
   }
 }
