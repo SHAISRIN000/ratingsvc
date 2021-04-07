@@ -59,11 +59,11 @@ public class RatingSvc {
 		policyObj.setApplicants(applicants);
 		policyObj.setPolicyNumber(policyNumber);
 		List<Coverage> coverages=new ArrayList<>();
-		coverages.add(new Coverage("BI","10000/30000"));
-		coverages.add(new Coverage("PD","50000"));
-		coverages.add(new Coverage("PIP","7000"));
+		coverages.add(new Coverage("BI","$10000/30000"));
+		coverages.add(new Coverage("PD","$50000"));
+		coverages.add(new Coverage("PIP","$7000"));
 		policyObj.setCoverages(coverages);
-		policyObj.setPremium("689");
+		policyObj.setPremium("$689.74");
 		
 		  
 		  String connectionString =
