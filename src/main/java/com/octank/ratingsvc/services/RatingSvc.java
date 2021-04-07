@@ -44,8 +44,8 @@ public class RatingSvc {
         System.out.println("The policy numer for rating"+policyNumber);
 		RestTemplate restTemplate = new RestTemplate();
 		String fooResourceUrl
-		  = "http://appsvc.octank-dev.svc.cluster.local";
-		String fullurl=fooResourceUrl + "/"+policyNumber+"/applicants";
+		  = "http://appsvc.octank-dev.svc.cluster.local/applicants/policy";
+		String fullurl=fooResourceUrl + "/"+policyNumber;
 		
 		System.out.println("Full url is "+fullurl);
 		ResponseEntity<List<Applicant>> response
