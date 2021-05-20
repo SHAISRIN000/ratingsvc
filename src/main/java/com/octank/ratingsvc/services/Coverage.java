@@ -4,6 +4,10 @@ public class Coverage {
 
 	String code;
 	String value;
+	
+	public Coverage() {
+		
+	}
 	public Coverage(String code, String value) {
 		super();
 		this.code = code;
