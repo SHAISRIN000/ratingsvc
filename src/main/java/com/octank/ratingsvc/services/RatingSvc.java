@@ -73,6 +73,7 @@ public class RatingSvc {
 		String covesourceUrl
 		  = "http://coveragesvc.octank-dev.svc.cluster.local/coverages/policy";
 	    covesourceUrl=fooResourceUrl + "/"+policyNumber;
+	    covesourceUrl="http://k8s-octankde-octannki-b59a16c3d7-688308869.us-east-1.elb.amazonaws.com/coverages/policy/399787";
 	    CoverageDetails coverages 
 		  = this.restTemplate.getForObject(covesourceUrl,CoverageDetails.class);
 	//	CoverageDetails coverages=response1.getBody();
