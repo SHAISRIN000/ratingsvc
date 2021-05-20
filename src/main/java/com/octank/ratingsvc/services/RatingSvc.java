@@ -69,26 +69,37 @@ public class RatingSvc {
 		  = this.restTemplate.exchange(fullurl,HttpMethod.GET,null, new ParameterizedTypeReference<List<Applicant>>() {});
 		AWSXRay.endSubsegment();
 		List<Applicant> applicants=response.getBody();
+
 		
+		String covesourceUrl
+		  = "http://appsvc.octank-dev.svc.cluster.local/coverages";
+	    covesourceUrl=fooResourceUrl + "/"+policyNumber;
+		ResponseEntity<CoverageDetails> response1
+		  = this.restTemplate.exchange(covesourceUrl,HttpMethod.GET,null, CoverageDetails.class);
+		AWSXRay.endSubsegment();
+		CoverageDetails coverages=response1.getBody();
 		
-		
-		Policy policyObj=new Policy();
-		policyObj.setApplicants(applicants);
-		policyObj.setPolicyNumber(policyNumber);
-		List<Coverage> coverages=new ArrayList<>();
-		coverages.add(new Coverage("BI","$10000/30000"));
-		coverages.add(new Coverage("PD","$50000"));
-		coverages.add(new Coverage("PIP","$7000"));
-		policyObj.setCoverages(coverages);
-		policyObj.setPremium("$689.74");
-		
-		AWSXRay.beginSubsegment("Saving Policy into DocumentDB");
 		  String connectionString =
 "mongodb://octankdev:octankdev@octankdev1.cluster-cfseldobtmse.us-east-1.docdb.amazonaws.com:27017/?replicaSet=rs0&readPreference=secondaryPreferred";		  //octank.cluster-ct9cduhirshz.us-east-1.docdb.amazonaws.com:27017
 		  MongoClientURI clientURI = new MongoClientURI(connectionString);
 		  MongoClient mongoClient = new MongoClient(clientURI);
 		  
 		  MongoDatabase testDB = mongoClient.getDatabase("octankdev");
+		  
+		
+		
+		Policy policyObj=new Policy();
+		policyObj.setApplicants(applicants);
+		policyObj.setPolicyNumber(policyNumber);
+		/*
+		 * List<Coverage> coverages=new ArrayList<>(); coverages.add(new
+		 * Coverage("BI","$10000/30000")); coverages.add(new Coverage("PD","$50000"));
+		 * coverages.add(new Coverage("PIP","$7000"));
+		 * policyObj.setCoverages(coverages);
+		 */		
+		policyObj.setCoverages(coverages.getCoverages());
+		policyObj.setPremium("$689.74");
+		
 		  MongoCollection<Document> numbersCollection =
 		  testDB.getCollection("policies");
 		//Converting a custom Class(Employee) to BasicDBObject
