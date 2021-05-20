@@ -72,7 +72,7 @@ public class RatingSvc {
 
 		
 		String covesourceUrl
-		  = "http://appsvc.octank-dev.svc.cluster.local/coverages";
+		  = "http://appsvc.octank-dev.svc.cluster.local/coverages/policy";
 	    covesourceUrl=fooResourceUrl + "/"+policyNumber;
 		ResponseEntity<CoverageDetails> response1
 		  = this.restTemplate.exchange(covesourceUrl,HttpMethod.GET,null, CoverageDetails.class);
