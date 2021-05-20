@@ -9,7 +9,9 @@ public class CoverageDetails {
 	
     private Integer policyNumber;
 
-
+public CoverageDetails() {
+	
+}
 	public Integer getPolicyNumber() {
 		return policyNumber;
 	}
