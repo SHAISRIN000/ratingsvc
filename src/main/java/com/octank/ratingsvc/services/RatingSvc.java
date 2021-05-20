@@ -67,17 +67,15 @@ public class RatingSvc {
 		System.out.println("Full url is "+fullurl);
 		ResponseEntity<List<Applicant>> response
 		  = this.restTemplate.exchange(fullurl,HttpMethod.GET,null, new ParameterizedTypeReference<List<Applicant>>() {});
-		AWSXRay.endSubsegment();
 		List<Applicant> applicants=response.getBody();
 
 		
 		String covesourceUrl
 		  = "http://appsvc.octank-dev.svc.cluster.local/coverages/policy";
 	    covesourceUrl=fooResourceUrl + "/"+policyNumber;
-		ResponseEntity<CoverageDetails> response1
-		  = this.restTemplate.exchange(covesourceUrl,HttpMethod.GET,null, CoverageDetails.class);
-		AWSXRay.endSubsegment();
-		CoverageDetails coverages=response1.getBody();
+	    CoverageDetails coverages 
+		  = this.restTemplate.getForObject(covesourceUrl,CoverageDetails.class);
+	//	CoverageDetails coverages=response1.getBody();
 		
 		  String connectionString =
 "mongodb://octankdev:octankdev@octankdev1.cluster-cfseldobtmse.us-east-1.docdb.amazonaws.com:27017/?replicaSet=rs0&readPreference=secondaryPreferred";		  //octank.cluster-ct9cduhirshz.us-east-1.docdb.amazonaws.com:27017
