@@ -48,6 +48,11 @@ spec:
           image: "amazon/aws-xray-daemon:latest"
           imagePullPolicy: Always
           name: xray-sidecar
+          securityContext:
+            privileged: false
+            readOnlyRootFilesystem: false
+            allowPrivilegeEscalation: false
+            runAsUser: 0          
           ports: 
             - 
               containerPort: 2000
