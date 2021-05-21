@@ -61,7 +61,7 @@ public class RatingSvc {
 		  String className=this.getClass().getName();
 
 
-		    System.out.println(className+"Entered inside rating");
+		    System.out.println(className+"Entered inside rating ");
 
 		    System.out.println(className+"The policy numer for rating"+policyNumber);
          AWSXRay.beginSubsegment("Fetching Applicants");
