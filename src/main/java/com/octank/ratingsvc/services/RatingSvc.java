@@ -2,6 +2,7 @@ package com.octank.ratingsvc.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.bson.Document;
@@ -57,19 +58,23 @@ public class RatingSvc {
 	@GetMapping(value = "/{policyNumber}",produces= "application/json")
 	    public Policy rating(@PathVariable("policyNumber") String policyNumber)
 	    {
+		  String className=this.getClass().getName();
 
-        System.out.println("The policy numer for rating"+policyNumber);
-         AWSXRay.beginSubsegment("Fetching Applicant");
+
+		    System.out.println(className+"Entered inside rating");
+
+		    System.out.println(className+"The policy numer for rating"+policyNumber);
+         AWSXRay.beginSubsegment("Fetching Applicants");
 		String fooResourceUrl
 		  = "http://appsvc.octank-dev.svc.cluster.local/applicants/policy";
 		String fullurl=fooResourceUrl + "/"+policyNumber;
 		
-		System.out.println("Full url is "+fullurl);
+		System.out.println(className+"Full url is "+fullurl);
 		ResponseEntity<List<Applicant>> response
 		  = this.restTemplate.exchange(fullurl,HttpMethod.GET,null, new ParameterizedTypeReference<List<Applicant>>() {});
 		List<Applicant> applicants=response.getBody();
-
-		
+AWSXRay.endSegment();
+AWSXRay.beginSubsegment("Fetching Coverages");
 		String covesourceUrl
 		  = "http://coveragesvc.octank-dev.svc.cluster.local/coverages/policy";
 	    covesourceUrl=covesourceUrl + "/"+policyNumber;
@@ -77,7 +82,8 @@ public class RatingSvc {
 	    CoverageDetails coverages 
 		  = this.restTemplate.getForObject(covesourceUrl,CoverageDetails.class);
 	//	CoverageDetails coverages=response1.getBody();
-		
+		AWSXRay.endSegment();
+		AWSXRay.beginSubsegment("Saving Rated Policy");
 		  String connectionString =
 "mongodb://octankdev:octankdev@octankdev1.cluster-cfseldobtmse.us-east-1.docdb.amazonaws.com:27017/?replicaSet=rs0&readPreference=secondaryPreferred";		  //octank.cluster-ct9cduhirshz.us-east-1.docdb.amazonaws.com:27017
 		  MongoClientURI clientURI = new MongoClientURI(connectionString);
@@ -97,8 +103,10 @@ public class RatingSvc {
 		 * policyObj.setCoverages(coverages);
 		 */		
 		policyObj.setCoverages(coverages.getCoverages());
-		policyObj.setPremium("$689.74");
-		
+		 Random r = new Random();
+		double premium=r.nextInt((int)((1000-100)*10+1))+100*10 / 10.0;
+		policyObj.setPremium("$"+premium);
+		System.out.println(className+"The Premium is "+premium);
 		  MongoCollection<Document> numbersCollection =
 		  testDB.getCollection("policies");
 		//Converting a custom Class(Employee) to BasicDBObject
@@ -108,12 +116,12 @@ public class RatingSvc {
 		  Document doc = Document.parse(json);
 	//	  BasicDBObject obj = (BasicDBObject)JSON.parse(gson.toJson(applicant));
 		  numbersCollection.insertOne(doc);
-		  System.out.println("Inserted Applicant Successfully");
+		  System.out.println(className+"Inserted Rated Policy Successfully");
 		
 			AWSXRay.endSubsegment();
 
 		
-		
+			System.out.println(className+"Exit from rating");
 		return policyObj;
 		
 		
