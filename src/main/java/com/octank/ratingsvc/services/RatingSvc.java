@@ -79,7 +79,7 @@ public class RatingSvc {
 	    CoverageDetails coverages 
 		  = this.restTemplate.getForObject(covesourceUrl,CoverageDetails.class);
 	//	CoverageDetails coverages=response1.getBody();
-		AWSXRay.beginSubsegment("Saving Rated Policy");
+		AWSXRay.beginSubsegment("Saving Rated Policy into DocumentDB");
 		  String connectionString =
 "mongodb://octankdev:octankdev@octankdev1.cluster-cfseldobtmse.us-east-1.docdb.amazonaws.com:27017/?replicaSet=rs0&readPreference=secondaryPreferred";		  //octank.cluster-ct9cduhirshz.us-east-1.docdb.amazonaws.com:27017
 		  MongoClientURI clientURI = new MongoClientURI(connectionString);
