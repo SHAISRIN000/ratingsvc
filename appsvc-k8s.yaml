@@ -21,7 +21,7 @@ metadata:
   name: ratingsvc
   namespace: octank-dev
 spec:
-  replicas: 2
+  replicas: 4
   strategy:
     type: RollingUpdate
     rollingUpdate:
