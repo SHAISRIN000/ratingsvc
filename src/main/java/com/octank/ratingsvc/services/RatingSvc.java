@@ -56,7 +56,7 @@ public class RatingSvc {
 
 	
    
-    
+	@CrossOrigin(origins = "*")
 	@GetMapping(value = "/{policyNumber}",produces= "application/json")
 	    public Policy rating(@PathVariable("policyNumber") String policyNumber)
 	    {
