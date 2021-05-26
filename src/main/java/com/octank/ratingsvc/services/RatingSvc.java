@@ -75,7 +75,7 @@ public class RatingSvc {
 		  = this.restTemplate.exchange(fullurl,HttpMethod.GET,null, new ParameterizedTypeReference<List<Applicant>>() {});
 		List<Applicant> applicants=response.getBody();
 		String covesourceUrl
-		  = "http://coveragesvc.octank-dev.svc.cluster.local/coverages/policy";
+		  = "http://coveragesvc.octank-dev.svc.cluster.local/coverages/";
 	    covesourceUrl=covesourceUrl + "/"+policyNumber;
 	    //covesourceUrl="http://k8s-octankde-octannki-b59a16c3d7-688308869.us-east-1.elb.amazonaws.com/coverages/policy/399787";
 	    CoverageDetails coverages 
