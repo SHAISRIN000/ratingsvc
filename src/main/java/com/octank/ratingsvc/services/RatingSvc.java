@@ -30,7 +30,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
 
-@CrossOrigin(maxAge = 3600,origins = "")
+@CrossOrigin
 @RestController
 @RequestMapping(path ="/rating")
 @XRayEnabled
