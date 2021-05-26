@@ -21,7 +21,7 @@ metadata:
   name: ratingsvc
   namespace: octank-dev
 spec:
-  replicas: 4
+  replicas: 1
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -38,9 +38,6 @@ spec:
       containers:
         - name: ratingsvc
           image: CONTAINER_IMAGE
-          resources: 
-            limits: 
-              cpu: 500m
           securityContext:
             privileged: false
             readOnlyRootFilesystem: false
