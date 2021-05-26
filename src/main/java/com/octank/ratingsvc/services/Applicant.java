@@ -20,16 +20,13 @@ public class Applicant {
     private String firstName;
     private String lastName;
     private ContactDetails contacts;
-    private String message;
+//    private String message;
     
-  public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
+	/*
+	 * public String getMessage() { return message; }
+	 * 
+	 * public void setMessage(String message) { this.message = message; }
+	 */
 	//  private boolean paperlessBilling;
 	@Override
 	public String toString() {

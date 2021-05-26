@@ -118,7 +118,7 @@ public class RatingSvc {
 		
 			AWSXRay.endSubsegment();
 			mongoClient.close();
-		
+		policyObj.setMessage("Rated successfully");
 			System.out.println(className+"   "+"Exit from rating");
 		return policyObj;
 		

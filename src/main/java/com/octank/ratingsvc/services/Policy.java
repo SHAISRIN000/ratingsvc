@@ -7,7 +7,16 @@ public class Policy {
 	String policyNumber;
 	List<Coverage> coverages;
 	String premium;
+	String message;
 	
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
 
 	public String getPolicyNumber() {
 		return policyNumber;
