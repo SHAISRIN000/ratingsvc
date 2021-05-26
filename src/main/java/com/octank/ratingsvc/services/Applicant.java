@@ -1,18 +1,18 @@
 package com.octank.ratingsvc.services;
 
+
 public class Applicant {
  
     public Applicant() {
  
     }
  
-    public Applicant(Integer id, Integer policyNumber,String firstName, String lastName, ContactDetails contacts, boolean paperlessBilling) {
+    public Applicant(Integer id, Integer policyNumber,String firstName, String lastName, ContactDetails contacts) {
         super();
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.contacts=contacts;
-        this.paperlessBilling=paperlessBilling;
     }
   
     private Integer id;
@@ -20,11 +20,21 @@ public class Applicant {
     private String firstName;
     private String lastName;
     private ContactDetails contacts;
-    private boolean paperlessBilling;
+    private String message;
+    
+  public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	//  private boolean paperlessBilling;
 	@Override
 	public String toString() {
 		return "Applicant [id=" + id + ", policyNumber=" + policyNumber + ",firstName=" + firstName + ", lastName=" + lastName + ", contacts=" + contacts
-				+ ", paperlessBilling=" + paperlessBilling + "]";
+				+  "]";
 	}
 
 	public Integer getId() {
@@ -67,14 +77,7 @@ public class Applicant {
 		this.contacts = contacts;
 	}
 
-	public boolean isPaperlessBilling() {
-		return paperlessBilling;
-	}
 
-	public void setPaperlessBilling(boolean paperlessBilling) {
-		this.paperlessBilling = paperlessBilling;
-	}
-	
  
     //Getters and setters
  
